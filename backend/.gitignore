@@ -1,0 +1,7 @@
+/vendor
+/.env
+/bootstrap/cache/*.php
+/storage/*.key
+/storage/logs/*.log
+/storage/framework/cache/data/*
+!/storage/framework/cache/data/.gitkeep
