@@ -40,11 +40,7 @@ class NoteController extends Controller
 
         $eleve = Eleve::query()->findOrFail($validated['eleve_id']);
         $moyenne = round((float) $eleve->notes()->avg('valeur'), 1);
-        $notification = null;
-
-        if ($moyenne < 10) {
-            $notification = $notifications->sendLowAverageEmail($eleve, $moyenne);
-        }
+        $notification = $notifications->sendNoteEmail($eleve, $note, $moyenne);
 
         return response()->json([
             'message' => 'Note enregistree.',

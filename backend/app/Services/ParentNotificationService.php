@@ -3,49 +3,101 @@
 namespace App\Services;
 
 use App\Models\Eleve;
+use App\Models\Note;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Throwable;
 
 class ParentNotificationService
 {
-    public function sendAbsenceSms(Eleve $eleve, string $statut): array
+    public function sendPresenceSms(Eleve $eleve, string $statut): array
     {
-        $sid = config('services.twilio.sid');
-        $token = config('services.twilio.token');
-        $from = config('services.twilio.from');
+        $apiKey = config('services.coussema.key');
+        $baseUrl = rtrim((string) config('services.coussema.base_url'), '/');
+        $senderName = config('services.coussema.sender_name', 'COUSSEMA');
 
-        if (! $sid || ! $token || ! $from) {
-            return $this->skipped('sms', 'Configuration Twilio absente.');
+        if (! $apiKey || ! $baseUrl) {
+            return $this->skipped('sms', 'Configuration Coussema absente.');
         }
 
-        $label = $statut === 'A' ? 'absent' : 'en retard';
+        if (! $eleve->parent_phone) {
+            return $this->skipped('sms', 'Numero du parent absent.');
+        }
+
+        $labels = [
+            'P' => 'present',
+            'A' => 'absent',
+            'R' => 'en retard',
+        ];
+
+        $label = $labels[$statut] ?? 'marque';
         $message = "EduTrack: Votre enfant {$eleve->nom} est marque {$label}.";
 
         try {
-            $response = Http::asForm()
-                ->withBasicAuth($sid, $token)
-                ->post("https://api.twilio.com/2010-04-01/Accounts/{$sid}/Messages.json", [
-                    'To' => $eleve->parent_phone,
-                    'From' => $from,
-                    'Body' => $message,
+            $response = Http::asJson()
+                ->withToken($apiKey)
+                ->withHeaders([
+                    'Idempotency-Key' => (string) Str::uuid(),
+                ])
+                ->post("{$baseUrl}/v1/sms/send", [
+                    'to' => $eleve->parent_phone,
+                    'message' => $message,
+                    'senderName' => $senderName,
+                    'routing' => 'priority',
                 ]);
+
+            $payload = $response->json();
+            $sent = $response->successful() && (bool) data_get($payload, 'success', false);
 
             return [
                 'channel' => 'sms',
-                'sent' => $response->successful(),
+                'sent' => $sent,
                 'status' => $response->status(),
-                'message' => $response->successful()
+                'message' => $sent
                     ? 'SMS envoye.'
-                    : ($response->json('message') ?? 'Erreur Twilio.'),
+                    : (data_get($payload, 'message') ?? 'Erreur Coussema.'),
+                'provider' => $payload,
             ];
         } catch (Throwable $e) {
             report($e);
 
-            return $this->failed('sms', 'Erreur reseau Twilio.');
+            return $this->failed('sms', 'Erreur reseau Coussema.');
         }
     }
 
+    public function sendAbsenceSms(Eleve $eleve, string $statut): array
+    {
+        return $this->sendPresenceSms($eleve, $statut);
+    }
+
     public function sendLowAverageEmail(Eleve $eleve, float $moyenne): array
+    {
+        return $this->sendEmail(
+            $eleve,
+            "Alerte Performance - {$eleve->nom}",
+            'emails.low-average',
+            [
+                'eleve' => $eleve,
+                'moyenne' => $moyenne,
+            ]
+        );
+    }
+
+    public function sendNoteEmail(Eleve $eleve, Note $note, float $moyenne): array
+    {
+        return $this->sendEmail(
+            $eleve,
+            "Nouvelle note - {$eleve->nom}",
+            'emails.note-created',
+            [
+                'eleve' => $eleve,
+                'note' => $note,
+                'moyenne' => $moyenne,
+            ]
+        );
+    }
+
+    private function sendEmail(Eleve $eleve, string $subject, string $view, array $data): array
     {
         $key = config('services.resend.key');
         $from = config('services.resend.from');
@@ -60,11 +112,8 @@ class ParentNotificationService
                 ->post('https://api.resend.com/emails', [
                     'from' => "{$fromName} <{$from}>",
                     'to' => [$eleve->parent_email],
-                    'subject' => "Alerte Performance - {$eleve->nom}",
-                    'html' => view('emails.low-average', [
-                        'eleve' => $eleve,
-                        'moyenne' => $moyenne,
-                    ])->render(),
+                    'subject' => $subject,
+                    'html' => view($view, $data)->render(),
                 ]);
 
             return [

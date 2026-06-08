@@ -86,3 +86,13 @@ Au lieu d'importer `database/edutrack.sql`, il est possible de creer la base `ed
 ```powershell
 php artisan migrate --seed
 ```
+
+pour lancer le serveur
+cd C:\Users\HP\Desktop\eductrack\backend
+& "C:\wamp64\bin\php\php8.2.13\php.exe" -S 127.0.0.1:8000 -t public
+
+
+
+pour lancer le front
+cd C:\Users\HP\Desktop\eductrack
+& "C:\wamp64\bin\php\php8.2.13\php.exe" -S 127.0.0.1:3000

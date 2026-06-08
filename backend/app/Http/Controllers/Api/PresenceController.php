@@ -40,11 +40,7 @@ class PresenceController extends Controller
         );
 
         $presence->load('eleve');
-        $notification = null;
-
-        if (in_array($presence->statut, ['A', 'R'], true)) {
-            $notification = $notifications->sendAbsenceSms($presence->eleve, $presence->statut);
-        }
+        $notification = $notifications->sendPresenceSms($presence->eleve, $presence->statut);
 
         return response()->json([
             'message' => 'Presence enregistree.',
