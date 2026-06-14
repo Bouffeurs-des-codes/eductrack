@@ -1,0 +1,14 @@
+Admin
+email: admin@gmail.com
+mot de passe: password
+rôle: admin
+
+Enseignant
+email: enseignant@gmail.com
+mot de passe: password
+rôle: enseignant
+
+Parent
+email: skykayumbabokomo@gmail.com
+mot de passe: password
+rôle: parent

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduTrack - Admin</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container nav-content">
+        <div>
+          <p class="eyebrow">Administration</p>
+          <h1>EduTrack</h1>
+        </div>
+        <div class="user-profile" aria-label="Profil utilisateur">
+          <div class="user-avatar" data-profile-initials>AD</div>
+          <div class="user-meta">
+            <strong data-profile-name>Administrateur EduTrack</strong>
+            <span data-profile-role>Admin</span>
+          </div>
+          <a class="profile-logout" href="index.html">D&eacute;connexion</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container dashboard-layout" aria-label="Dashboard administrateur">
+      <section class="dashboard-hero">
+        <div>
+          <p class="section-label">Administration</p>
+          <h2>Tableau de bord admin</h2>
+          <p>G&eacute;rez les utilisateurs, les classes, les &eacute;l&egrave;ves et les rapports scolaires.</p>
+        </div>
+        <div class="hero-metrics" aria-label="Indicateurs rapides">
+          <button class="metric-card active" type="button" data-admin-target="eleves"><strong id="metric-eleves">0</strong><span>&Eacute;l&egrave;ves</span></button>
+          <button class="metric-card" type="button" data-admin-target="classes"><strong id="metric-classes">0</strong><span>Classes</span></button>
+          <button class="metric-card" type="button" data-admin-target="rapports"><strong id="metric-alertes">0</strong><span>Alertes</span></button>
+        </div>
+      </section>
+
+      <p id="admin-feedback" class="form-feedback dashboard-feedback" aria-live="polite"></p>
+
+      <section class="dashboard-grid">
+        <article class="card admin-panel" data-admin-section="users">
+          <div class="card-header">
+            <div>
+              <p class="section-label">Utilisateurs</p>
+              <h2>Gestion des comptes</h2>
+            </div>
+            <button id="btn-user-add" class="btn btn-small btn-primary" type="button">Ajouter</button>
+          </div>
+          <div class="toolbar">
+            <input id="admin-user-search" type="text" placeholder="Rechercher un compte" />
+            <select id="admin-role-filter">
+              <option value="">Tous les r&ocirc;les</option>
+              <option value="admin">Admin</option>
+              <option value="enseignant">Enseignant</option>
+              <option value="parent">Parent</option>
+            </select>
+          </div>
+          <div class="list-stack">
+            <div id="admin-users"></div>
+          </div>
+        </article>
+
+        <article class="card admin-panel" data-admin-section="classes">
+          <div class="card-header">
+            <div>
+              <p class="section-label">Classes</p>
+              <h2>Organisation scolaire</h2>
+            </div>
+            <button id="btn-classe-add" class="btn btn-small btn-primary" type="button">Cr&eacute;er</button>
+          </div>
+          <div class="toolbar">
+            <input id="admin-classe-search" type="text" placeholder="Rechercher une classe" />
+          </div>
+          <div id="admin-classes" class="class-grid"></div>
+          <div class="table-responsive compact-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Classe</th>
+                  <th>Niveau</th>
+                  <th>Description</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-classes-table"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card full-width admin-panel active-panel" data-admin-section="eleves">
+          <div class="card-header">
+            <div>
+              <p class="section-label">&Eacute;l&egrave;ves</p>
+              <h2>Gestion des &eacute;l&egrave;ves</h2>
+            </div>
+            <button id="btn-eleve-add" class="btn btn-small btn-success" type="button">Nouvel &eacute;l&egrave;ve</button>
+          </div>
+          <div class="toolbar">
+            <input id="admin-eleve-search" type="text" placeholder="Rechercher un &eacute;l&egrave;ve" />
+            <select id="admin-classe-filter">
+              <option value="">Toutes les classes</option>
+            </select>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th>Classe</th>
+                  <th>Contact parent</th>
+                  <th>Email parent</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-eleves"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card full-width admin-panel" data-admin-section="rapports">
+          <div class="card-header">
+            <div>
+              <p class="section-label">Rapports</p>
+              <h2>Vue consolid&eacute;e</h2>
+            </div>
+            <button id="btn-rapport-export" class="btn btn-small btn-primary" type="button">Exporter</button>
+          </div>
+          <div class="report-grid">
+            <div class="report-card"><span>Pr&eacute;sence moyenne</span><strong id="report-presence">N/A</strong></div>
+            <div class="report-card"><span>Moyenne g&eacute;n&eacute;rale</span><strong id="report-moyenne">N/A</strong></div>
+            <div class="report-card"><span>&Eacute;l&egrave;ves en difficult&eacute;</span><strong id="report-difficulte">0</strong></div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script defer src="js/api.js"></script>
+    <script defer src="js/profile.js"></script>
+    <script defer src="js/ui-kit.js"></script>
+    <script defer src="js/school-data.js"></script>
+    <script defer src="js/admin.js"></script>
+  </body>
+</html>

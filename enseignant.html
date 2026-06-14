@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduTrack - Enseignant</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container nav-content">
+        <div>
+          <p class="eyebrow">Espace enseignant</p>
+          <h1>EduTrack</h1>
+        </div>
+        <div class="user-profile" aria-label="Profil utilisateur">
+          <div class="user-avatar" data-profile-initials>EN</div>
+          <div class="user-meta">
+            <strong data-profile-name>Enseignant EduTrack</strong>
+            <span data-profile-role>Enseignant</span>
+          </div>
+          <a class="profile-logout" href="index.html">D&eacute;connexion</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container grid-layout">
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <p class="section-label">Pr&eacute;sence</p>
+            <h2>Enregistrer une pr&eacute;sence</h2>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="eleve-presence">S&eacute;lectionner un &eacute;l&egrave;ve</label>
+          <select id="eleve-presence"></select>
+        </div>
+        <div class="form-group">
+          <label>Statut</label>
+          <div class="radio-group">
+            <label><input type="radio" name="statut" value="P" checked /> Pr&eacute;sent (P)</label>
+            <label><input type="radio" name="statut" value="A" /> Absent (A)</label>
+            <label><input type="radio" name="statut" value="R" /> Retard (R)</label>
+          </div>
+        </div>
+        <p id="presence-feedback" class="form-feedback" aria-live="polite"></p>
+        <button id="btn-presence" class="btn btn-primary">Enregistrer la pr&eacute;sence</button>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <p class="section-label">&Eacute;valuation</p>
+            <h2>Saisie des notes</h2>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="eleve-note">S&eacute;lectionner un &eacute;l&egrave;ve</label>
+          <select id="eleve-note"></select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="type-note">Type</label>
+            <select id="type-note">
+              <option value="Interro">Interrogation</option>
+              <option value="Examen">Examen</option>
+              <option value="Note devoir">Note devoir</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="valeur-note">Cote sur 20</label>
+            <input type="number" id="valeur-note" min="0" max="20" />
+          </div>
+        </div>
+        <p id="note-feedback" class="form-feedback" aria-live="polite"></p>
+        <button id="btn-note" class="btn btn-success">Calculer et enregistrer</button>
+      </section>
+
+      <section class="card full-width">
+        <div class="card-header">
+          <div>
+            <p class="section-label">Devoir</p>
+            <h2>Planifier un devoir</h2>
+          </div>
+          <button id="btn-devoir-open" class="btn btn-small btn-primary" type="button">Nouveau devoir</button>
+        </div>
+        <p id="devoir-feedback" class="form-feedback" aria-live="polite"></p>
+      </section>
+
+      <section class="card full-width">
+        <div class="card-header">
+          <div>
+            <p class="section-label">Synth&egrave;se</p>
+            <h2>Analyse globale de l'&eacute;l&egrave;ve</h2>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Taux de pr&eacute;sence</th>
+                <th>Moyenne</th>
+                <th>Statut g&eacute;n&eacute;ral</th>
+              </tr>
+            </thead>
+            <tbody id="tableau-analyse"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card full-width">
+        <div class="card-header">
+          <div>
+            <p class="section-label">Devoirs</p>
+            <h2>Devoirs enregistr&eacute;s</h2>
+          </div>
+        </div>
+        <div class="toolbar">
+          <input id="devoir-search" type="text" placeholder="Rechercher un devoir" />
+          <select id="devoir-classe-filter">
+            <option value="">Toutes les classes</option>
+          </select>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Titre</th>
+                <th>Classe</th>
+                <th>Mati&egrave;re</th>
+                <th>Date limite</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tableau-devoirs"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script defer src="js/api.js"></script>
+    <script defer src="js/profile.js"></script>
+    <script defer src="js/ui-kit.js"></script>
+    <script defer src="js/ui.js"></script>
+    <script defer src="js/school-data.js"></script>
+    <script defer src="js/main.js"></script>
+  </body>
+</html>

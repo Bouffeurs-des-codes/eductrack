@@ -4,19 +4,35 @@ function vider(element) {
     }
 }
 
-function statutClass(statut) {
+function normaliserStatut(statut) {
     if (statut === 'Regulier et performant') {
-        return 'text-green';
+        return 'R\u00e9gulier et performant';
     }
 
     if (statut === 'En difficulte') {
+        return 'En difficult\u00e9';
+    }
+
+    if (statut === 'Donnees insuffisantes') {
+        return 'Donn\u00e9es insuffisantes';
+    }
+
+    return statut || 'Donn\u00e9es insuffisantes';
+}
+
+function statutClass(statut) {
+    if (statut === 'Regulier et performant' || statut === 'R\u00e9gulier et performant') {
+        return 'text-green';
+    }
+
+    if (statut === 'En difficulte' || statut === 'En difficult\u00e9') {
         return 'text-red';
     }
 
     return 'text-gray';
 }
 
-export function peuplerSelects(eleves) {
+function peuplerSelects(eleves) {
     const selectPresence = document.getElementById('eleve-presence');
     const selectNote = document.getElementById('eleve-note');
 
@@ -24,7 +40,7 @@ export function peuplerSelects(eleves) {
     vider(selectNote);
 
     if (!eleves.length) {
-        const option = new Option('Aucun eleve disponible', '');
+        const option = new Option('Aucun \u00e9l\u00e8ve disponible', '');
         selectPresence.add(option.cloneNode(true));
         selectNote.add(option);
         return;
@@ -37,7 +53,7 @@ export function peuplerSelects(eleves) {
     });
 }
 
-export function afficherAnalyses(analyses) {
+function afficherAnalyses(analyses) {
     const tbody = document.getElementById('tableau-analyse');
     vider(tbody);
 
@@ -45,7 +61,7 @@ export function afficherAnalyses(analyses) {
         const tr = document.createElement('tr');
         const td = document.createElement('td');
         td.colSpan = 4;
-        td.textContent = 'Aucune donnee disponible.';
+        td.textContent = 'Aucune donn\u00e9e disponible.';
         tr.appendChild(td);
         tbody.appendChild(tr);
         return;
@@ -65,7 +81,7 @@ export function afficherAnalyses(analyses) {
         presence.textContent = analyse.taux_presence === null ? 'N/A' : `${analyse.taux_presence}%`;
         moyenne.textContent = analyse.moyenne === null ? 'N/A' : `${Number(analyse.moyenne).toFixed(1)} / 20`;
         statutBadge.className = statutClass(analyse.statut_general);
-        statutBadge.textContent = analyse.statut_general;
+        statutBadge.textContent = normaliserStatut(analyse.statut_general);
         statut.appendChild(statutBadge);
 
         tr.append(nom, presence, moyenne, statut);
@@ -73,7 +89,7 @@ export function afficherAnalyses(analyses) {
     });
 }
 
-export function mettreAJourTableauAnalyse(db) {
+function mettreAJourTableauAnalyse(db) {
     const analyses = db.eleves.map((eleve) => {
         const presencesEleve = db.presences.filter((presence) => presence.eleveId === eleve.id);
         const totalPresences = presencesEleve.length;
@@ -83,12 +99,12 @@ export function mettreAJourTableauAnalyse(db) {
             ? notesEleve.reduce((total, note) => total + note.valeur, 0) / notesEleve.length
             : null;
         const tauxPresence = totalPresences ? Math.round((joursPresents / totalPresences) * 100) : null;
-        let statutGeneral = 'Donnees insuffisantes';
+        let statutGeneral = 'Donn\u00e9es insuffisantes';
 
         if (tauxPresence !== null && moyenne !== null) {
             statutGeneral = moyenne >= 10 && tauxPresence >= 80
-                ? 'Regulier et performant'
-                : 'En difficulte';
+                ? 'R\u00e9gulier et performant'
+                : 'En difficult\u00e9';
         }
 
         return {
@@ -101,3 +117,9 @@ export function mettreAJourTableauAnalyse(db) {
 
     afficherAnalyses(analyses);
 }
+
+window.EduTrackUi = {
+    afficherAnalyses,
+    mettreAJourTableauAnalyse,
+    peuplerSelects,
+};

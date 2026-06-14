@@ -3,108 +3,116 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EduTrack - Suivi Scolaire</title>
+    <title>EduTrack - Connexion</title>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Cpath d='M18 18h28v6H18zm0 11h28v6H18zm0 11h18v6H18z' fill='white'/%3E%3C/svg%3E"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <nav class="navbar">
-      <div class="container nav-content">
-        <div>
-          <p class="eyebrow">Suivi scolaire</p>
+  <body class="login-page">
+    <main class="login-shell">
+      <section class="login-showcase" aria-label="Pr&eacute;sentation EduTrack">
+        <div class="brand-mark" aria-hidden="true">
+          <span></span>
+        </div>
+        <div class="login-copy">
+          <p class="eyebrow">Plateforme scolaire</p>
           <h1>EduTrack</h1>
+          <p>
+            Une plateforme claire pour suivre les pr&eacute;sences, les notes, les devoirs,
+            les classes et les &eacute;changes avec les parents.
+          </p>
         </div>
-        <span>Système de suivi global</span>
-      </div>
-    </nav>
 
-    <main class="container grid-layout">
-      <section class="card">
-        <div class="card-header">
-          <div>
-            <p class="section-label">Présence</p>
-            <h2>Note de Présence</h2>
+        <div class="showcase-grid" aria-label="Fonctionnalit&eacute;s principales">
+          <div class="showcase-card">
+            <span>Pr&eacute;sence</span>
+            <strong>Suivi quotidien</strong>
+          </div>
+          <div class="showcase-card">
+            <span>R&eacute;sultats</span>
+            <strong>Moyennes et alertes</strong>
+          </div>
+          <div class="showcase-card">
+            <span>Devoirs</span>
+            <strong>Travaux &agrave; remettre</strong>
+          </div>
+          <div class="showcase-card">
+            <span>Parents</span>
+            <strong>SMS et emails</strong>
           </div>
         </div>
-        <div class="form-group">
-          <label for="eleve-presence">Sélectionner un élève</label>
-          <select id="eleve-presence"></select>
-        </div>
-        <div class="form-group">
-          <label>Statut</label>
-          <div class="radio-group">
-            <label
-              ><input type="radio" name="statut" value="P" checked /> Présent
-              (P)</label
-            >
-            <label
-              ><input type="radio" name="statut" value="A" /> Absent (A)</label
-            >
-            <label
-              ><input type="radio" name="statut" value="R" /> Retard (R)</label
-            >
+
+        <div class="product-preview" aria-hidden="true">
+          <div class="preview-topbar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="preview-content">
+            <div class="preview-stat">
+              <small>Pr&eacute;sence</small>
+              <strong>92%</strong>
+            </div>
+            <div class="preview-stat">
+              <small>Moyenne</small>
+              <strong>14.6</strong>
+            </div>
+            <div class="preview-list">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
           </div>
         </div>
-        <button id="btn-presence" class="btn btn-primary">
-          Enregistrer la présence
-        </button>
       </section>
 
-      <section class="card">
-        <div class="card-header">
-          <div>
-            <p class="section-label">Évaluation</p>
-            <h2>Saisie des Notes</h2>
-          </div>
+      <section class="login-panel">
+        <div class="login-panel-head">
+          <p class="eyebrow">Connexion</p>
+          <h2>Bienvenue</h2>
+          <p>Acc&eacute;dez &agrave; votre espace selon votre r&ocirc;le.</p>
         </div>
-        <div class="form-group">
-          <label for="eleve-note">Sélectionner un élève</label>
-          <select id="eleve-note"></select>
-        </div>
-        <div class="form-row">
+
+        <ol class="login-steps" aria-label="&Eacute;tapes de connexion">
+          <li class="step-active" data-step="credentials">
+            <span>1</span>
+            <strong>Identifiants</strong>
+          </li>
+          <li data-step="role">
+            <span>2</span>
+            <strong>R&ocirc;le</strong>
+          </li>
+          <li data-step="success">
+            <span>3</span>
+            <strong>Acc&egrave;s</strong>
+          </li>
+        </ol>
+
+        <form id="login-form" class="login-form">
           <div class="form-group">
-            <label for="type-note">Type :</label>
-            <select id="type-note">
-              <option value="Interro">Interrogation</option>
-              <option value="Examen">Examen</option>
+            <label for="login-email">Email</label>
+            <input id="login-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Mot de passe</label>
+            <input id="login-password" name="password" type="password" autocomplete="current-password" required />
+          </div>
+          <div class="form-group">
+            <label for="login-role">R&ocirc;le</label>
+            <select id="login-role" name="role" required>
+              <option value="parent">Parent</option>
+              <option value="enseignant">Enseignant</option>
+              <option value="admin">Admin</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="valeur-note">Cote (sur 20) :</label>
-            <input type="number" id="valeur-note" min="0" max="20" />
-          </div>
-        </div>
-        <button id="btn-note" class="btn btn-success">
-          Calculer & Enregistrer
-        </button>
-      </section>
-
-      <section class="card full-width">
-        <div class="card-header">
-          <div>
-            <p class="section-label">Synthèse</p>
-            <h2>Analyse Globale de l'Élève</h2>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Taux de Présence</th>
-                <th>Moyenne</th>
-                <th>Statut Général</th>
-              </tr>
-            </thead>
-            <tbody id="tableau-analyse"></tbody>
-          </table>
-        </div>
+          <p id="login-feedback" class="login-feedback" aria-live="polite"></p>
+          <button class="btn btn-primary" type="submit">Se connecter</button>
+        </form>
       </section>
     </main>
 
-    <script type="module" src="js/main.js"></script>
+    <script defer src="js/login.js"></script>
   </body>
 </html>
